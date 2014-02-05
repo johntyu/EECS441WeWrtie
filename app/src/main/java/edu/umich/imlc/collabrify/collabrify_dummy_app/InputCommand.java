@@ -1,45 +1,62 @@
-package com.eecs.collab;
+package edu.umich.imlc.collabrify.collabrify_dummy_app;
 
 
 import android.util.Log;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 public class InputCommand {
     private CharSequence c;
-    private int index;
-    private int newLength;
-    private int oldLength;
+    public int index;
+    private boolean isInsert;
     private boolean userInputAction;
+    private int uid;
 
-    public InputCommand(CharSequence c, int index, int oldLength, int newLength, boolean userInputAction, CTXEditText editText) {
+    public InputCommand(int uid, CharSequence c, int index, int oldLength, int newLength, boolean userInputAction, MainActivity activity, CTXEditText editText) {
         this.c = c;
         this.index = index;
-        this.newLength = newLength;
-        this.oldLength = oldLength;
+        this.isInsert = (newLength != 0);
         this.userInputAction = userInputAction;
+        this.uid = uid;
 
         Log.d("CREATE", "InputCommand Create: New" + newLength + " Old" + oldLength);
 
-        editText.sendInitInputMsg(this);
+        activity.sendInitInputMsg(this);
     }
 
-    public void undo(CTXEditText editText) {
-        editText.selfEditOccurring = true;
+    public InputCommand(byte[] stream, int uid) {
+        try {
+            InputProto.InputAction inputAction = InputProto.InputAction.parseFrom(stream);
+            Log.d("RECEIVE", inputAction.toString());
+            this.c = inputAction.getC();
+            this.index = inputAction.getIndex();
+            this.isInsert = inputAction.getIsInsert();
+            this.uid = inputAction.getUid();
+            this.userInputAction = (inputAction.getUid() == uid);
+        } catch(InvalidProtocolBufferException e) {
+            //some fail code
+        }
+    }
+
+    public void undo(MainActivity activity, CTXEditText editText) {
+        activity.selfEditOccurring = true;
         String text = editText.getText().toString();
         String newText = "";
+        int currentSelection = editText.getSelectionStart();
         if(isInsert()) {
             if(index != 0) {
                 newText += text.subSequence(0, index);
             }
-            if(index + newLength != text.length()) {
-                newText += text.subSequence(index + newLength, text.length());
+            if(index + 1 != text.length()) {
+                newText += text.subSequence(index + 1, text.length());
             }
 
-            int newCursorPosition = editText.getSelectionStart();
-            if(newCursorPosition > index) {
-                newCursorPosition -=  newLength;
-            }
             editText.setText(newText);
-            editText.setSelection(newCursorPosition);
+            if(userInputAction) {
+                editText.setSelection(index);
+            } else if(currentSelection > index) {
+                editText.setSelection(currentSelection - 1);
+            }
         } else {
             if(index != 0) {
                 newText += text.subSequence(0, index);
@@ -49,21 +66,21 @@ public class InputCommand {
                 newText += text.subSequence(index, text.length());
             }
 
-            int newCursorPosition = editText.getSelectionStart();
-            if(editText.getSelectionStart() > index) {
-                newCursorPosition += + oldLength;
-            }
-            Log.d("UNDO", "Text Undo - New Cursor Position: " + newCursorPosition);
             editText.setText(newText);
-            editText.setSelection(newCursorPosition);
+            if(userInputAction) {
+                editText.setSelection(index+1);
+            } else if(currentSelection > index) {
+                editText.setSelection(currentSelection+1);
+            }
         }
-        editText.selfEditOccurring = false;
+        activity.selfEditOccurring = false;
     }
 
-    public void redo(CTXEditText editText) {
-        editText.selfEditOccurring = true;
+    public void redo(MainActivity activity, CTXEditText editText) {
+        activity.selfEditOccurring = true;
         String text = editText.getText().toString();
         String newText = "";
+        int currentSelection = editText.getSelectionStart();
         if(isInsert()) {
             if(index != 0) {
                 newText += text.subSequence(0, index);
@@ -73,40 +90,48 @@ public class InputCommand {
                 newText += text.subSequence(index, text.length());
             }
 
-            int newCursorPosition = editText.getSelectionStart();
-            if(newCursorPosition > index) {
-                newCursorPosition += editText.getSelectionStart() + newLength;
-            }
             editText.setText(newText);
-            editText.setSelection(newCursorPosition);
+            if(userInputAction) {
+                editText.setSelection(index+1);
+            } else if(currentSelection > index) {
+                editText.setSelection(currentSelection+1);
+            }
         } else {
             if(index != 0) {
                 newText += text.subSequence(0, index);
             }
-            if(index + oldLength != text.length()) {
-                newText += text.subSequence(index + oldLength, text.length());
+            if(index + 1 != text.length()) {
+                newText += text.subSequence(index + 1, text.length());
             }
 
-            int newCursorPosition = editText.getSelectionStart();
-            if(newCursorPosition > index) {
-                newCursorPosition -= oldLength;
-            }
             editText.setText(newText);
-            editText.setSelection(newCursorPosition);
+            if(userInputAction) {
+                editText.setSelection(index+1);
+            } else if(currentSelection > index) {
+                editText.setSelection(currentSelection-1);
+            }
         }
-        editText.selfEditOccurring = false;
+        activity.selfEditOccurring = false;
+    }
+
+    public InputProto.InputAction getInitProto() {
+        return InputProto.InputAction.newBuilder()
+                .setIndex(index)
+                .setC(c.toString())
+                .setIsInsert(isInsert)
+                .setUid(uid)
+                .build();
     }
 
     public InputProto.InputAction getProto(boolean undo) {
         return InputProto.InputAction.newBuilder()
+                .setIndex(index)
                 .setC(c.toString())
-                .setNewLength(newLength)
-                .setOldLength(oldLength)
-                .setInit(true)
-                .setUndo(undo)
+                .setIsInsert(isInsert ^ undo)
+                .setUid(uid)
                 .build();
     }
 
     public boolean isUserInputAction() {return userInputAction;}
-    public boolean isInsert() {return (oldLength == 0);}
+    public boolean isInsert() {return isInsert;}
 }

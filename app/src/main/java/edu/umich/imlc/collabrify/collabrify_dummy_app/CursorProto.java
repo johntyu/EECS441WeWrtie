@@ -20,6 +20,16 @@ public final class CursorProto {
      * <code>optional int32 index = 3;</code>
      */
     int getIndex();
+
+    // optional int32 uid = 4;
+    /**
+     * <code>optional int32 uid = 4;</code>
+     */
+    boolean hasUid();
+    /**
+     * <code>optional int32 uid = 4;</code>
+     */
+    int getUid();
   }
   /**
    * Protobuf type {@code edu.umich.imlc.collabrify.collabrify_dummy_app.CursorAction}
@@ -75,6 +85,11 @@ public final class CursorProto {
             case 24: {
               bitField0_ |= 0x00000001;
               index_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000002;
+              uid_ = input.readInt32();
               break;
             }
           }
@@ -133,8 +148,25 @@ public final class CursorProto {
       return index_;
     }
 
+    // optional int32 uid = 4;
+    public static final int UID_FIELD_NUMBER = 4;
+    private int uid_;
+    /**
+     * <code>optional int32 uid = 4;</code>
+     */
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int32 uid = 4;</code>
+     */
+    public int getUid() {
+      return uid_;
+    }
+
     private void initFields() {
       index_ = 0;
+      uid_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -151,6 +183,9 @@ public final class CursorProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt32(3, index_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(4, uid_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -163,6 +198,10 @@ public final class CursorProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, index_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, uid_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -282,6 +321,8 @@ public final class CursorProto {
         super.clear();
         index_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        uid_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -314,6 +355,10 @@ public final class CursorProto {
           to_bitField0_ |= 0x00000001;
         }
         result.index_ = index_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.uid_ = uid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -332,6 +377,9 @@ public final class CursorProto {
         if (other == edu.umich.imlc.collabrify.collabrify_dummy_app.CursorProto.CursorAction.getDefaultInstance()) return this;
         if (other.hasIndex()) {
           setIndex(other.getIndex());
+        }
+        if (other.hasUid()) {
+          setUid(other.getUid());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -393,6 +441,39 @@ public final class CursorProto {
         return this;
       }
 
+      // optional int32 uid = 4;
+      private int uid_ ;
+      /**
+       * <code>optional int32 uid = 4;</code>
+       */
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 uid = 4;</code>
+       */
+      public int getUid() {
+        return uid_;
+      }
+      /**
+       * <code>optional int32 uid = 4;</code>
+       */
+      public Builder setUid(int value) {
+        bitField0_ |= 0x00000002;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 uid = 4;</code>
+       */
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        uid_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:edu.umich.imlc.collabrify.collabrify_dummy_app.CursorAction)
     }
 
@@ -419,9 +500,10 @@ public final class CursorProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\014Cursor.proto\022.edu.umich.imlc.collabrif" +
-      "y.collabrify_dummy_app\"\035\n\014CursorAction\022\r" +
-      "\n\005index\030\003 \001(\005B=\n.edu.umich.imlc.collabri" +
-      "fy.collabrify_dummy_appB\013CursorProto"
+      "y.collabrify_dummy_app\"*\n\014CursorAction\022\r" +
+      "\n\005index\030\003 \001(\005\022\013\n\003uid\030\004 \001(\005B=\n.edu.umich." +
+      "imlc.collabrify.collabrify_dummy_appB\013Cu" +
+      "rsorProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -433,7 +515,7 @@ public final class CursorProto {
           internal_static_edu_umich_imlc_collabrify_collabrify_dummy_app_CursorAction_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_edu_umich_imlc_collabrify_collabrify_dummy_app_CursorAction_descriptor,
-              new java.lang.String[] { "Index", });
+              new java.lang.String[] { "Index", "Uid", });
           return null;
         }
       };

@@ -2,53 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <EditText
+    <edu.umich.imlc.collabrify.collabrify_dummy_app.CTXEditText
         android:id="@+id/BroadcastText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:inputType="text" >
+        android:inputType="textMultiLine|textNoSuggestions" >
         <requestFocus />
-    </EditText>
-    <Button
-        android:id="@+id/BroadcastButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/BroadcastText"
-        android:layout_below="@+id/BroadcastText"
-        android:onClick="doBroadcast"
-        android:text="Broadcast" />
-    <TextView
-        android:id="@+id/BroadcastedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
-    <Button
-        android:id="@+id/ConnectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:onClick="doCreateSession"
-        android:text="CreateSession" />
-    <Button
-        android:id="@+id/getSessionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:onClick="doJoinSession"
-        android:text="Join Session" />
-    <Button
-        android:id="@+id/LeaveSessionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="doLeaveSession"
-        android:text="Leave Session" />
+    </edu.umich.imlc.collabrify.collabrify_dummy_app.CTXEditText>
 </RelativeLayout>
 <!-- From: file:/Users/renjay/AndroidStudioProjects/Collabrify-dummy_app1/app/src/main/res/layout/activity_main.xml -->

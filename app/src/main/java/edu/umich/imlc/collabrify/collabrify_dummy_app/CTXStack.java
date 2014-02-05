@@ -1,4 +1,4 @@
-package com.eecs.collab;
+package edu.umich.imlc.collabrify.collabrify_dummy_app;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -19,10 +19,17 @@ public class CTXStack extends Vector<InputCommand> {
     }
 
     public InputCommand pop() {
-        InputCommand e = remove(super.size() - 1);
-        if(e.isUserInputAction()) {
-            numUserInputActions--;
+        int i = super.size();
+        do {
+            --i;
+        } while (i >= 0 && !elementAt(i).isUserInputAction());
+
+        if(i < 0) {
+            return null;
         }
+
+        InputCommand e = remove(i);
+        numUserInputActions--;
         return e;
     }
 
@@ -35,6 +42,17 @@ public class CTXStack extends Vector<InputCommand> {
             }
         }
         numUserInputActions = 0;
+    }
+
+    public void adjustAllAfter(int index, boolean isInsert) {
+        int diff = -1;
+        if(isInsert) diff = 1;
+
+        for(InputCommand e : this) {
+            if(e.index >= index) {
+                e.index += diff;
+            }
+        }
     }
 
     public int getNumUserInputActions() {

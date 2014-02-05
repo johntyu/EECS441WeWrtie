@@ -11,25 +11,15 @@ public final class InputProto {
   public interface InputActionOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // optional bool undo = 1;
+    // optional bool isInsert = 1;
     /**
-     * <code>optional bool undo = 1;</code>
+     * <code>optional bool isInsert = 1;</code>
      */
-    boolean hasUndo();
+    boolean hasIsInsert();
     /**
-     * <code>optional bool undo = 1;</code>
+     * <code>optional bool isInsert = 1;</code>
      */
-    boolean getUndo();
-
-    // optional bool init = 2;
-    /**
-     * <code>optional bool init = 2;</code>
-     */
-    boolean hasInit();
-    /**
-     * <code>optional bool init = 2;</code>
-     */
-    boolean getInit();
+    boolean getIsInsert();
 
     // optional string c = 3;
     /**
@@ -46,25 +36,25 @@ public final class InputProto {
     com.google.protobuf.ByteString
         getCBytes();
 
-    // optional int32 newLength = 4;
+    // optional int32 uid = 6;
     /**
-     * <code>optional int32 newLength = 4;</code>
+     * <code>optional int32 uid = 6;</code>
      */
-    boolean hasNewLength();
+    boolean hasUid();
     /**
-     * <code>optional int32 newLength = 4;</code>
+     * <code>optional int32 uid = 6;</code>
      */
-    int getNewLength();
+    int getUid();
 
-    // optional int32 oldLength = 5;
+    // optional int32 index = 7;
     /**
-     * <code>optional int32 oldLength = 5;</code>
+     * <code>optional int32 index = 7;</code>
      */
-    boolean hasOldLength();
+    boolean hasIndex();
     /**
-     * <code>optional int32 oldLength = 5;</code>
+     * <code>optional int32 index = 7;</code>
      */
-    int getOldLength();
+    int getIndex();
   }
   /**
    * Protobuf type {@code edu.umich.imlc.collabrify.collabrify_dummy_app.InputAction}
@@ -119,27 +109,22 @@ public final class InputProto {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              undo_ = input.readBool();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              init_ = input.readBool();
+              isInsert_ = input.readBool();
               break;
             }
             case 26: {
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000002;
               c_ = input.readBytes();
               break;
             }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              newLength_ = input.readInt32();
+            case 48: {
+              bitField0_ |= 0x00000004;
+              uid_ = input.readInt32();
               break;
             }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              oldLength_ = input.readInt32();
+            case 56: {
+              bitField0_ |= 0x00000008;
+              index_ = input.readInt32();
               break;
             }
           }
@@ -182,36 +167,20 @@ public final class InputProto {
     }
 
     private int bitField0_;
-    // optional bool undo = 1;
-    public static final int UNDO_FIELD_NUMBER = 1;
-    private boolean undo_;
+    // optional bool isInsert = 1;
+    public static final int ISINSERT_FIELD_NUMBER = 1;
+    private boolean isInsert_;
     /**
-     * <code>optional bool undo = 1;</code>
+     * <code>optional bool isInsert = 1;</code>
      */
-    public boolean hasUndo() {
+    public boolean hasIsInsert() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional bool undo = 1;</code>
+     * <code>optional bool isInsert = 1;</code>
      */
-    public boolean getUndo() {
-      return undo_;
-    }
-
-    // optional bool init = 2;
-    public static final int INIT_FIELD_NUMBER = 2;
-    private boolean init_;
-    /**
-     * <code>optional bool init = 2;</code>
-     */
-    public boolean hasInit() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional bool init = 2;</code>
-     */
-    public boolean getInit() {
-      return init_;
+    public boolean getIsInsert() {
+      return isInsert_;
     }
 
     // optional string c = 3;
@@ -221,7 +190,7 @@ public final class InputProto {
      * <code>optional string c = 3;</code>
      */
     public boolean hasC() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>optional string c = 3;</code>
@@ -257,44 +226,43 @@ public final class InputProto {
       }
     }
 
-    // optional int32 newLength = 4;
-    public static final int NEWLENGTH_FIELD_NUMBER = 4;
-    private int newLength_;
+    // optional int32 uid = 6;
+    public static final int UID_FIELD_NUMBER = 6;
+    private int uid_;
     /**
-     * <code>optional int32 newLength = 4;</code>
+     * <code>optional int32 uid = 6;</code>
      */
-    public boolean hasNewLength() {
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 uid = 6;</code>
+     */
+    public int getUid() {
+      return uid_;
+    }
+
+    // optional int32 index = 7;
+    public static final int INDEX_FIELD_NUMBER = 7;
+    private int index_;
+    /**
+     * <code>optional int32 index = 7;</code>
+     */
+    public boolean hasIndex() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 newLength = 4;</code>
+     * <code>optional int32 index = 7;</code>
      */
-    public int getNewLength() {
-      return newLength_;
-    }
-
-    // optional int32 oldLength = 5;
-    public static final int OLDLENGTH_FIELD_NUMBER = 5;
-    private int oldLength_;
-    /**
-     * <code>optional int32 oldLength = 5;</code>
-     */
-    public boolean hasOldLength() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional int32 oldLength = 5;</code>
-     */
-    public int getOldLength() {
-      return oldLength_;
+    public int getIndex() {
+      return index_;
     }
 
     private void initFields() {
-      undo_ = false;
-      init_ = false;
+      isInsert_ = false;
       c_ = "";
-      newLength_ = 0;
-      oldLength_ = 0;
+      uid_ = 0;
+      index_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -309,19 +277,16 @@ public final class InputProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBool(1, undo_);
+        output.writeBool(1, isInsert_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBool(2, init_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getCBytes());
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, newLength_);
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(6, uid_);
       }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, oldLength_);
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(7, index_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -334,23 +299,19 @@ public final class InputProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, undo_);
+          .computeBoolSize(1, isInsert_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, init_);
+          .computeBytesSize(3, getCBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getCBytes());
+          .computeInt32Size(6, uid_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, newLength_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, oldLength_);
+          .computeInt32Size(7, index_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -468,16 +429,14 @@ public final class InputProto {
 
       public Builder clear() {
         super.clear();
-        undo_ = false;
+        isInsert_ = false;
         bitField0_ = (bitField0_ & ~0x00000001);
-        init_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         c_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        uid_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        newLength_ = 0;
+        index_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        oldLength_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -509,23 +468,19 @@ public final class InputProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.undo_ = undo_;
+        result.isInsert_ = isInsert_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.init_ = init_;
+        result.c_ = c_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.c_ = c_;
+        result.uid_ = uid_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.newLength_ = newLength_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.oldLength_ = oldLength_;
+        result.index_ = index_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -542,22 +497,19 @@ public final class InputProto {
 
       public Builder mergeFrom(edu.umich.imlc.collabrify.collabrify_dummy_app.InputProto.InputAction other) {
         if (other == edu.umich.imlc.collabrify.collabrify_dummy_app.InputProto.InputAction.getDefaultInstance()) return this;
-        if (other.hasUndo()) {
-          setUndo(other.getUndo());
-        }
-        if (other.hasInit()) {
-          setInit(other.getInit());
+        if (other.hasIsInsert()) {
+          setIsInsert(other.getIsInsert());
         }
         if (other.hasC()) {
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000002;
           c_ = other.c_;
           onChanged();
         }
-        if (other.hasNewLength()) {
-          setNewLength(other.getNewLength());
+        if (other.hasUid()) {
+          setUid(other.getUid());
         }
-        if (other.hasOldLength()) {
-          setOldLength(other.getOldLength());
+        if (other.hasIndex()) {
+          setIndex(other.getIndex());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -586,68 +538,35 @@ public final class InputProto {
       }
       private int bitField0_;
 
-      // optional bool undo = 1;
-      private boolean undo_ ;
+      // optional bool isInsert = 1;
+      private boolean isInsert_ ;
       /**
-       * <code>optional bool undo = 1;</code>
+       * <code>optional bool isInsert = 1;</code>
        */
-      public boolean hasUndo() {
+      public boolean hasIsInsert() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional bool undo = 1;</code>
+       * <code>optional bool isInsert = 1;</code>
        */
-      public boolean getUndo() {
-        return undo_;
+      public boolean getIsInsert() {
+        return isInsert_;
       }
       /**
-       * <code>optional bool undo = 1;</code>
+       * <code>optional bool isInsert = 1;</code>
        */
-      public Builder setUndo(boolean value) {
+      public Builder setIsInsert(boolean value) {
         bitField0_ |= 0x00000001;
-        undo_ = value;
+        isInsert_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool undo = 1;</code>
+       * <code>optional bool isInsert = 1;</code>
        */
-      public Builder clearUndo() {
+      public Builder clearIsInsert() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        undo_ = false;
-        onChanged();
-        return this;
-      }
-
-      // optional bool init = 2;
-      private boolean init_ ;
-      /**
-       * <code>optional bool init = 2;</code>
-       */
-      public boolean hasInit() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional bool init = 2;</code>
-       */
-      public boolean getInit() {
-        return init_;
-      }
-      /**
-       * <code>optional bool init = 2;</code>
-       */
-      public Builder setInit(boolean value) {
-        bitField0_ |= 0x00000002;
-        init_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bool init = 2;</code>
-       */
-      public Builder clearInit() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        init_ = false;
+        isInsert_ = false;
         onChanged();
         return this;
       }
@@ -658,7 +577,7 @@ public final class InputProto {
        * <code>optional string c = 3;</code>
        */
       public boolean hasC() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>optional string c = 3;</code>
@@ -698,7 +617,7 @@ public final class InputProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
         c_ = value;
         onChanged();
         return this;
@@ -707,7 +626,7 @@ public final class InputProto {
        * <code>optional string c = 3;</code>
        */
       public Builder clearC() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         c_ = getDefaultInstance().getC();
         onChanged();
         return this;
@@ -720,74 +639,74 @@ public final class InputProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
         c_ = value;
         onChanged();
         return this;
       }
 
-      // optional int32 newLength = 4;
-      private int newLength_ ;
+      // optional int32 uid = 6;
+      private int uid_ ;
       /**
-       * <code>optional int32 newLength = 4;</code>
+       * <code>optional int32 uid = 6;</code>
        */
-      public boolean hasNewLength() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 newLength = 4;</code>
+       * <code>optional int32 uid = 6;</code>
        */
-      public int getNewLength() {
-        return newLength_;
+      public int getUid() {
+        return uid_;
       }
       /**
-       * <code>optional int32 newLength = 4;</code>
+       * <code>optional int32 uid = 6;</code>
        */
-      public Builder setNewLength(int value) {
-        bitField0_ |= 0x00000008;
-        newLength_ = value;
+      public Builder setUid(int value) {
+        bitField0_ |= 0x00000004;
+        uid_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 newLength = 4;</code>
+       * <code>optional int32 uid = 6;</code>
        */
-      public Builder clearNewLength() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        newLength_ = 0;
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        uid_ = 0;
         onChanged();
         return this;
       }
 
-      // optional int32 oldLength = 5;
-      private int oldLength_ ;
+      // optional int32 index = 7;
+      private int index_ ;
       /**
-       * <code>optional int32 oldLength = 5;</code>
+       * <code>optional int32 index = 7;</code>
        */
-      public boolean hasOldLength() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+      public boolean hasIndex() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 oldLength = 5;</code>
+       * <code>optional int32 index = 7;</code>
        */
-      public int getOldLength() {
-        return oldLength_;
+      public int getIndex() {
+        return index_;
       }
       /**
-       * <code>optional int32 oldLength = 5;</code>
+       * <code>optional int32 index = 7;</code>
        */
-      public Builder setOldLength(int value) {
-        bitField0_ |= 0x00000010;
-        oldLength_ = value;
+      public Builder setIndex(int value) {
+        bitField0_ |= 0x00000008;
+        index_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 oldLength = 5;</code>
+       * <code>optional int32 index = 7;</code>
        */
-      public Builder clearOldLength() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        oldLength_ = 0;
+      public Builder clearIndex() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        index_ = 0;
         onChanged();
         return this;
       }
@@ -818,11 +737,10 @@ public final class InputProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\013Input.proto\022.edu.umich.imlc.collabrify" +
-      ".collabrify_dummy_app\"Z\n\013InputAction\022\014\n\004" +
-      "undo\030\001 \001(\010\022\014\n\004init\030\002 \001(\010\022\t\n\001c\030\003 \001(\t\022\021\n\tn" +
-      "ewLength\030\004 \001(\005\022\021\n\toldLength\030\005 \001(\005B<\n.edu" +
-      ".umich.imlc.collabrify.collabrify_dummy_" +
-      "appB\nInputProto"
+      ".collabrify_dummy_app\"F\n\013InputAction\022\020\n\010" +
+      "isInsert\030\001 \001(\010\022\t\n\001c\030\003 \001(\t\022\013\n\003uid\030\006 \001(\005\022\r" +
+      "\n\005index\030\007 \001(\005B<\n.edu.umich.imlc.collabri" +
+      "fy.collabrify_dummy_appB\nInputProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -834,7 +752,7 @@ public final class InputProto {
           internal_static_edu_umich_imlc_collabrify_collabrify_dummy_app_InputAction_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_edu_umich_imlc_collabrify_collabrify_dummy_app_InputAction_descriptor,
-              new java.lang.String[] { "Undo", "Init", "C", "NewLength", "OldLength", });
+              new java.lang.String[] { "IsInsert", "C", "Uid", "Index", });
           return null;
         }
       };

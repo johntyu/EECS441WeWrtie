@@ -10,7 +10,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,13 +44,13 @@ public class MainActivity extends Activity implements
   private static final String DISPLAY_NAME = "user display name";
   private static final String ACCOUNT_GMAIL = "imlcteam@gmail.com";
   private static final String ACCESS_TOKEN = "2468";
+    private static final String JOIN_THIS = "TRASHCAN7";
 
   private CollabrifyClient myClient;
-  private TextView broadcastedText;
-  private EditText broadcastText;
-  private Button connectButton;
+  private CTXEditText broadcastText;
   private ArrayList<String> tags = new ArrayList<String>();
   private long sessionId;
+  private int uid = 0;
   private String sessionName;
   private String password = "password";
 
@@ -70,8 +74,14 @@ public class MainActivity extends Activity implements
       public void run()
       {
         Utils.printMethodName(TAG);
-        String message = new String(data);
-        broadcastedText.setText(message);
+          InputCommand command = new InputCommand(data, uid);
+          if(!command.isUserInputAction()) {
+            command.redo(MainActivity.this, (CTXEditText) findViewById(R.id.BroadcastText));
+            undoStack.adjustAllAfter(command.index, command.isInsert());
+            redoStack.adjustAllAfter(command.index, command.isInsert());
+
+            undoStack.push(command);
+          }
       }
     });
   }
@@ -88,10 +98,7 @@ public class MainActivity extends Activity implements
   }
 
   @Override
-  public void onBroadcastDone(final byte[] event, long orderId, long srid)
-  {
-    showToast(new String(event) + " broadcasted");
-  }
+  public void onBroadcastDone(final byte[] event, long orderId, long srid){}
 
   @Override
   public void onSessionCreated(final CollabrifySession session)
@@ -105,8 +112,7 @@ public class MainActivity extends Activity implements
       @Override
       public void run()
       {
-        showToast("Session created, id: " + session.id());
-        connectButton.setText(sessionName);
+        showToast("Session created: " +sessionName + ", id: " + session.id());
       }
     });
   }
@@ -122,8 +128,9 @@ public class MainActivity extends Activity implements
       @Override
       public void run()
       {
+          Random rand = new Random();
+          uid = rand.nextInt();
         showToast("Session Joined");
-        connectButton.setText(sessionName);
       }
     });
   }
@@ -148,51 +155,18 @@ public class MainActivity extends Activity implements
       public void run()
       {
         showToast("Left session");
-        connectButton.setText("CreateSession");
       }
     });
   }
 
-  @Override
-  public void onCreate(Bundle savedInstanceState)
+
+  public void doBroadcast(byte[] msg)
   {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-
-    broadcastText = (EditText) findViewById(R.id.BroadcastText);
-    broadcastedText = (TextView) findViewById(R.id.BroadcastedText);
-    connectButton = (Button) findViewById(R.id.ConnectButton);
-
-    // Instantiate client object
-    try
-    {
-      myClient = CollabrifyClient.newClient(this, GMAIL, DISPLAY_NAME,
-          ACCOUNT_GMAIL, ACCESS_TOKEN, false);
-    }
-    catch( InterruptedException e )
-    {
-      Log.e(TAG, "error", e);
-    }
-    catch( ExecutionException e )
-    {
-      Log.e(TAG, "error", e);
-    }
-
-
-    tags.add("sample");
-  }
-
-  public void doBroadcast(View v)
-  {
-    if( broadcastText.getText().toString().isEmpty() )
-      return;
     if( myClient != null && myClient.inSession() )
     {
       try
       {
-        myClient.broadcast(broadcastText.getText().toString().getBytes(),
-            "lol", broadcastListener);
-        broadcastText.getText().clear();
+        myClient.broadcast(msg, "lol", broadcastListener);
       }
       catch( CollabrifyException e )
       {
@@ -201,12 +175,13 @@ public class MainActivity extends Activity implements
     }
   }
 
-  public void doCreateSession(View v)
+  public void doCreateSession()
   {
     try
     {
       Random rand = new Random();
       sessionName = "Test " + rand.nextInt(Integer.MAX_VALUE);
+        sessionName = JOIN_THIS;
       myClient.createSession(sessionName, tags, password, 0,
           createSessionListener, sessionListener);
     }
@@ -216,7 +191,7 @@ public class MainActivity extends Activity implements
     }
   }
 
-  public void doJoinSession(View v)
+  public void doJoinSession()
   {
     if( myClient.inSession() )
     {
@@ -232,7 +207,7 @@ public class MainActivity extends Activity implements
     }
   }
 
-  public void doLeaveSession(View v)
+  public void doLeaveSession()
   {
     if( !myClient.inSession() )
     {
@@ -277,9 +252,23 @@ public class MainActivity extends Activity implements
     List<String> sessionNames = new ArrayList<String>();
     for( CollabrifySession s : sessionList )
     {
+        if(s.name().compareTo(JOIN_THIS) == 0) {
+
+            try
+            {
+                sessionId = s.id();
+                myClient.joinSession(sessionId, password, joinSessionListener,
+                        sessionListener);
+            }
+            catch( CollabrifyException e )
+            {
+                onError(e);
+            }
+            return;
+        }
       sessionNames.add(s.name());
     }
-
+/*
     // create a dialog to show the list of session names to the user
     final AlertDialog.Builder builder = new AlertDialog.Builder(
         MainActivity.this);
@@ -313,6 +302,7 @@ public class MainActivity extends Activity implements
         builder.show();
       }
     });
+    */
   }
 
   private void showToast(final String text)
@@ -363,4 +353,211 @@ public class MainActivity extends Activity implements
   {
     // unused since we don't provide an interface to prevent further joins
   }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        CTXEditText textField = (CTXEditText) findViewById(R.id.BroadcastText);
+        menu_init(menu.findItem(R.id.action_undo), menu.findItem(R.id.action_redo));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        CTXEditText textField = (CTXEditText) findViewById(R.id.BroadcastText);
+
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_undo) {
+            undoActionInvoked();
+            return true;
+        } else if (id == R.id.action_redo) {
+            redoActionInvoked();
+            return true;
+        } else if(id == R.id.action_create_session) {
+            doCreateSession();
+            return true;
+        } else if(id == R.id.action_leave_session) {
+            doLeaveSession();
+            return true;
+        } else if(id == R.id.action_join_session) {
+            doJoinSession();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
+
+
+
+    public boolean selfEditOccurring =false;
+    public boolean userEditOccurring = false;
+
+    public int lastCursorIndex = 0;
+    public String lastText = "";
+
+    MenuItem menu_undo;
+    MenuItem menu_redo;
+
+    private CTXStack undoStack = new CTXStack();
+    private CTXStack redoStack = new CTXStack();
+
+    public void menu_init(MenuItem menu_undo, MenuItem menu_redo) {
+        this.menu_undo = menu_undo;
+        this.menu_redo = menu_redo;
+    }
+
+
+    //Called when user invokes the undo action
+    public void undoActionInvoked() {
+        InputCommand e;
+        e = undoStack.pop();
+        if(e != null) {
+            e.undo(this, (CTXEditText) findViewById(R.id.BroadcastText));
+            sendUndoMsg(e);
+            redoStack.push(e);
+        }
+
+        updateUndoRedo();
+    }
+
+    //Called when user invokes the redo action
+    public void redoActionInvoked() {
+        InputCommand e;
+        do {
+            e = redoStack.pop();
+            e.redo(this, (CTXEditText) findViewById(R.id.BroadcastText));
+            sendRedoMsg(e);
+            undoStack.push(e);
+        } while (!e.isUserInputAction() && !redoStack.isEmpty());
+
+        updateUndoRedo();
+    }
+
+    public void updateUndoRedo() {
+        menu_undo.setEnabled(undoStack.getNumUserInputActions() != 0);
+        menu_redo.setEnabled(redoStack.getNumUserInputActions() != 0);
+    }
+
+
+    /* Start Buffers Implementation */
+    public void sendCursorMsg(int index) {
+        CursorProto.CursorAction cursorAction = CursorProto.CursorAction.newBuilder()
+                .setIndex(index)
+                .setUid(uid)
+                .build();
+        doBroadcast(cursorAction.toByteArray());
+        Log.d("BUFFER", cursorAction.toString());
+    }
+
+    public void sendInitInputMsg(InputCommand inputCommand) {
+        InputProto.InputAction inputAction = inputCommand.getInitProto();
+        doBroadcast(inputAction.toByteArray());
+        Log.d("BUFFER", inputAction.toString());
+    }
+
+    public void sendUndoMsg(InputCommand c) {
+        sendInputMsg(c, true);
+    }
+
+    public void sendRedoMsg(InputCommand c) {
+        sendInputMsg(c, false);
+    }
+
+    public void sendInputMsg(InputCommand inputCommand, boolean isUndo) {
+        InputProto.InputAction inputAction = inputCommand.getProto(isUndo);
+        doBroadcast(inputAction.toByteArray());
+        Log.d("BUFFER", inputAction.toString());
+    }
+    /* End Buffers Implementation */
+
+
+
+
+
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        broadcastText = (CTXEditText) findViewById(R.id.BroadcastText);
+
+
+        // Instantiate client object
+        try
+        {
+            myClient = CollabrifyClient.newClient(this, GMAIL, DISPLAY_NAME,
+                    ACCOUNT_GMAIL, ACCESS_TOKEN, false);
+        }
+        catch( InterruptedException e )
+        {
+            Log.e(TAG, "error", e);
+        }
+        catch( ExecutionException e )
+        {
+            Log.e(TAG, "error", e);
+        }
+
+
+        tags.add("sample");
+
+
+        broadcastText.addTextChangedListener(new TextWatcher() {
+
+            /* Start TextWatcher Implementation */
+            @Override
+            public void afterTextChanged(Editable s) {}
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!selfEditOccurring && undoStack != null) {
+                    if(count != 0) {
+                        Log.d("INFO", "INSERTED character: " + s.subSequence(start, start + count) + " (" + count + ")");
+                        undoStack.push(new InputCommand(uid, s.subSequence(start, start + count), start, before, count, true, MainActivity.this, (CTXEditText) findViewById(R.id.BroadcastText)));
+                    } else {
+                        Log.d("INFO", "DELETED character: " + lastText.subSequence(start, start + before) + " (" + before + ")");
+                        undoStack.push(new InputCommand(uid, lastText.subSequence(start, start + before), start, before, count, true, MainActivity.this, (CTXEditText) findViewById(R.id.BroadcastText)));
+                    }
+
+                    if(redoStack.getNumUserInputActions() > 0) {
+                        redoStack.purgeUserInputActions();
+                    }
+
+                    userEditOccurring = true;
+                    updateUndoRedo();
+                }
+                lastText = s.toString();
+            }
+    /* End TextWatcher Implementation */
+        });
+    }
+
+
+
+
+
 }

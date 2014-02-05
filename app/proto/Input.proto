@@ -4,12 +4,8 @@ option java_package = "edu.umich.imlc.collabrify.collabrify_dummy_app";
 option java_outer_classname = "InputProto";
 
 message InputAction {
-	optional bool undo = 1;
-	optional bool init = 2;
-
-    optional string c = 3;
-    optional int32 newLength = 4;
-    optional int32 oldLength = 5;
+	optional bool isInsert = 1;
+   	optional string c = 3;
 	optional int32 uid = 6;
 	optional int32 index = 7;
 }

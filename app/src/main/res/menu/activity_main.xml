@@ -1,6 +1,36 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+
+    <group android:orderInCategory="100">
+        <item android:id="@+id/action_create_session"
+            android:title="Create Session"
+            android:orderInCategory="0"
+            android:showAsAction="never" />
+        <item android:id="@+id/action_join_session"
+            android:title="Join Session"
+            android:orderInCategory="100"
+            android:showAsAction="never" />
+        <item android:id="@+id/action_leave_session"
+            android:title="Leave Session"
+            android:orderInCategory="500"
+            android:showAsAction="never" />
+        <item android:id="@+id/action_end_session"
+            android:title="End Session"
+            android:orderInCategory="600"
+            android:showAsAction="never" />
+    </group>
+
+    <group
+        android:orderInCategory="200">
+        <item android:id="@+id/action_redo"
+            android:title="Redo"
+            android:orderInCategory="100"
+            android:enabled="false"
+            android:showAsAction="always" />
+        <item android:id="@+id/action_undo"
+            android:title="Undo"
+            android:orderInCategory="200"
+            android:enabled="false"
+            android:showAsAction="always" />
+    </group>
+
 </menu>
