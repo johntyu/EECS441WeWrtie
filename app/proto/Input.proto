@@ -10,4 +10,6 @@ message InputAction {
     optional string c = 3;
     optional int32 newLength = 4;
     optional int32 oldLength = 5;
+	optional int32 uid = 6;
+	optional int32 index = 7;
 }

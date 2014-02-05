@@ -5,4 +5,5 @@ option java_outer_classname = "CursorProto";
 
 message CursorAction {
 	optional int32 index = 3;
+	optional int32 uid = 4;
 }
