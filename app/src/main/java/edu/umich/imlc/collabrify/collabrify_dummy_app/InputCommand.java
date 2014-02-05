@@ -54,8 +54,10 @@ public class InputCommand {
             editText.setText(newText);
             if(userInputAction) {
                 editText.setSelection(index);
-            } else if(currentSelection > index) {
+            } else if(currentSelection >= index) {
                 editText.setSelection(currentSelection - 1);
+            } else {
+                editText.setSelection(currentSelection);
             }
         } else {
             if(index != 0) {
@@ -69,8 +71,10 @@ public class InputCommand {
             editText.setText(newText);
             if(userInputAction) {
                 editText.setSelection(index+1);
-            } else if(currentSelection > index) {
+            } else if(currentSelection >= index) {
                 editText.setSelection(currentSelection+1);
+            } else {
+                editText.setSelection(currentSelection);
             }
         }
         activity.selfEditOccurring = false;
@@ -93,8 +97,10 @@ public class InputCommand {
             editText.setText(newText);
             if(userInputAction) {
                 editText.setSelection(index+1);
-            } else if(currentSelection > index) {
+            } else if(currentSelection >= index) {
                 editText.setSelection(currentSelection+1);
+            } else {
+                editText.setSelection(currentSelection);
             }
         } else {
             if(index != 0) {
@@ -107,8 +113,10 @@ public class InputCommand {
             editText.setText(newText);
             if(userInputAction) {
                 editText.setSelection(index+1);
-            } else if(currentSelection > index) {
+            } else if(currentSelection >= index) {
                 editText.setSelection(currentSelection-1);
+            } else {
+                editText.setSelection(currentSelection);
             }
         }
         activity.selfEditOccurring = false;

@@ -1,8 +1,9 @@
 <resources>
 
-    <string name="app_name">Collabrify-dummy_app</string>
+    <string name="app_name">CollabrifyGLY</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">CollabrifyGLY</string>
+    <string name="startup_msg">Click the menu in the top right corner to create or join a session</string>
 
 </resources>

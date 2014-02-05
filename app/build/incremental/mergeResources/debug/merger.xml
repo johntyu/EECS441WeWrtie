@@ -46,9 +46,11 @@
             <file
                 path="/Users/renjay/AndroidStudioProjects/Collabrify-dummy_app1/app/src/main/res/values/strings.xml"
                 qualifiers="" >
-                <string name="title_activity_main" >MainActivity
+                <string name="title_activity_main" >CollabrifyGLY
                 </string>
-                <string name="app_name" >Collabrify-dummy_app
+                <string name="startup_msg" >Click the menu in the top right corner to create or join a session
+                </string>
+                <string name="app_name" >CollabrifyGLY
                 </string>
                 <string name="hello_world" >Hello world!
                 </string>

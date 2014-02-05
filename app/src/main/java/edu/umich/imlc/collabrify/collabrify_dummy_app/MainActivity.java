@@ -40,11 +40,11 @@ public class MainActivity extends Activity implements
 {
   private static String TAG = "dummy";
 
-  private static final String GMAIL = "user email";
-  private static final String DISPLAY_NAME = "user display name";
-  private static final String ACCOUNT_GMAIL = "imlcteam@gmail.com";
-  private static final String ACCESS_TOKEN = "2468";
-    private static final String JOIN_THIS = "TRASHCAN10";
+  private static final String GMAIL = "user@mail.com";
+  private static final String DISPLAY_NAME = "CollabrifyGLY";
+  private static final String ACCOUNT_GMAIL = "441winter2014@umich.edu";
+  private static final String ACCESS_TOKEN = "338692774BBE";
+    private static final String JOIN_THIS = "TRASHCAN12";
 
   private CollabrifyClient myClient;
   private CTXEditText broadcastText;
@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements
   private long sessionId;
   private int uid = 0;
   private String sessionName;
-  private String password = "password";
+  private String password = "hello";
 
   // redundant but for the sake of readability
   private CollabrifySessionListener sessionListener = this;
@@ -114,6 +114,17 @@ public class MainActivity extends Activity implements
       public void run()
       {
         showToast("Session created: " +sessionName + ", id: " + session.id());
+
+          Random rand = new Random();
+          uid = rand.nextInt();
+
+          CTXEditText editText = (CTXEditText) findViewById(R.id.BroadcastText);
+          userEditOccurring = true;
+          selfEditOccurring = true;
+          editText.setText("");
+          editText.setEnabled(true);
+          userEditOccurring = false;
+          selfEditOccurring = false;
       }
     });
   }
@@ -172,7 +183,7 @@ public class MainActivity extends Activity implements
           redoStack.clear();
           CTXEditText editText = (CTXEditText) findViewById(R.id.BroadcastText);
           editText.setEnabled(false);
-          editText.setText("Click the menu in the top right corner to join a session!");
+          editText.setText(R.string.startup_msg);
           selfEditOccurring = false;
           userEditOccurring = false;
 

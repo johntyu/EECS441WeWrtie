@@ -7,11 +7,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Click the menu in the top right corner to join a session!"
+        android:text="@string/startup_msg"
         android:enabled="false"
         android:ems="10"
-        android:inputType="textMultiLine|textNoSuggestions" >
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
         <requestFocus />
     </edu.umich.imlc.collabrify.collabrify_dummy_app.CTXEditText>
 </RelativeLayout>
