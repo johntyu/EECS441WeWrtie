@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements
   private static final String DISPLAY_NAME = "user display name";
   private static final String ACCOUNT_GMAIL = "imlcteam@gmail.com";
   private static final String ACCESS_TOKEN = "2468";
-    private static final String JOIN_THIS = "TRASHCAN7";
+    private static final String JOIN_THIS = "TRASHCAN9";
 
   private CollabrifyClient myClient;
   private CTXEditText broadcastText;
@@ -81,6 +81,7 @@ public class MainActivity extends Activity implements
             redoStack.adjustAllAfter(command.index, command.isInsert());
 
             undoStack.push(command);
+              updateUndoRedo();
           }
       }
     });

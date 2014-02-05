@@ -30,6 +30,11 @@ public class CTXEditText extends EditText {
 
     @Override
     public void setSelection(int index) {
+        if(index < 0) {
+            index = 0;
+        } else if(index > this.length()) {
+            index = this.length();
+        }
         super.setSelection(index);
     }
 
