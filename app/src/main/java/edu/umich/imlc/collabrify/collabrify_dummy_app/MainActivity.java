@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements
   private static final String DISPLAY_NAME = "user display name";
   private static final String ACCOUNT_GMAIL = "imlcteam@gmail.com";
   private static final String ACCESS_TOKEN = "2468";
-    private static final String JOIN_THIS = "TRASHCAN9";
+    private static final String JOIN_THIS = "TRASHCAN10";
 
   private CollabrifyClient myClient;
   private CTXEditText broadcastText;
@@ -131,7 +131,15 @@ public class MainActivity extends Activity implements
       {
           Random rand = new Random();
           uid = rand.nextInt();
-        showToast("Session Joined");
+          showToast("Session Joined");
+
+          CTXEditText editText = (CTXEditText) findViewById(R.id.BroadcastText);
+          userEditOccurring = true;
+          selfEditOccurring = true;
+          editText.setText("");
+          editText.setEnabled(true);
+          userEditOccurring = false;
+          selfEditOccurring = false;
       }
     });
   }
@@ -156,6 +164,18 @@ public class MainActivity extends Activity implements
       public void run()
       {
         showToast("Left session");
+          selfEditOccurring = true;
+          userEditOccurring = true;
+          lastCursorIndex = 0;
+          lastText = "";
+          undoStack.clear();
+          redoStack.clear();
+          CTXEditText editText = (CTXEditText) findViewById(R.id.BroadcastText);
+          editText.setEnabled(false);
+          editText.setText("Click the menu in the top right corner to join a session!");
+          selfEditOccurring = false;
+          userEditOccurring = false;
+
       }
     });
   }

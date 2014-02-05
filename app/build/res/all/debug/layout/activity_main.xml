@@ -8,6 +8,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:text="Click the menu in the top right corner to join a session!"
+        android:enabled="false"
         android:ems="10"
         android:inputType="textMultiLine|textNoSuggestions" >
         <requestFocus />

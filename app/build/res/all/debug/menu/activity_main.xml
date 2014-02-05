@@ -13,10 +13,6 @@
             android:title="Leave Session"
             android:orderInCategory="500"
             android:showAsAction="never" />
-        <item android:id="@+id/action_end_session"
-            android:title="End Session"
-            android:orderInCategory="600"
-            android:showAsAction="never" />
     </group>
 
     <group
