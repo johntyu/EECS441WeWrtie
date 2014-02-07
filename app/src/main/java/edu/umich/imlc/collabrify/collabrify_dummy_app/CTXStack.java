@@ -45,6 +45,17 @@ public class CTXStack extends Vector<InputCommand> {
     }
 
     public void adjustAllAfter(int index, boolean isInsert) {
+        if(size() > 20) {
+            Iterator<InputCommand> iter = this.iterator();
+            while(iter.hasNext() && size() > 15) {
+                InputCommand c = iter.next();
+                if(c.isUserInputAction()) {
+                    numUserInputActions--;
+                }
+                iter.remove();
+            }
+        }
+
         if(!isInsert) {
             Iterator<InputCommand> iter = this.iterator();
             while(iter.hasNext()) {
@@ -66,6 +77,12 @@ public class CTXStack extends Vector<InputCommand> {
                 e.index += diff;
             }
         }
+    }
+
+    @Override
+    public void clear() {
+        numUserInputActions = 0;
+        super.clear();
     }
 
     public int getNumUserInputActions() {

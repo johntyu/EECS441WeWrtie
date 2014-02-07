@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import edu.umich.imlc.collabrify.client.CollabrifyParticipant;
 import edu.umich.imlc.collabrify.client.CollabrifySession;
 import edu.umich.imlc.collabrify.client.exceptions.CollabrifyException;
 import edu.umich.imlc.collabrify.client.exceptions.CollabrifyUnrecoverableException;
+import edu.umich.imlc.collabrify.client.exceptions.ConnectException;
 
 public class MainActivity extends Activity implements
     CollabrifySessionListener, CollabrifyListSessionsListener,
@@ -44,7 +46,7 @@ public class MainActivity extends Activity implements
   private static final String DISPLAY_NAME = "CollabrifyGLY";
   private static final String ACCOUNT_GMAIL = "441winter2014@umich.edu";
   private static final String ACCESS_TOKEN = "338692774BBE";
-    private static final String JOIN_THIS = "TRASHCAN12";
+    private static final String JOIN_THIS = "CollabrifyGLY1";
 
   private CollabrifyClient myClient;
   private CTXEditText broadcastText;
@@ -181,6 +183,7 @@ public class MainActivity extends Activity implements
           lastText = "";
           undoStack.clear();
           redoStack.clear();
+          updateUndoRedo();
           CTXEditText editText = (CTXEditText) findViewById(R.id.BroadcastText);
           editText.setEnabled(false);
           editText.setText(R.string.startup_msg);
@@ -209,18 +212,49 @@ public class MainActivity extends Activity implements
 
   public void doCreateSession()
   {
-    try
-    {
-      Random rand = new Random();
-      sessionName = "Test " + rand.nextInt(Integer.MAX_VALUE);
-        sessionName = JOIN_THIS;
-      myClient.createSession(sessionName, tags, password, 0,
-          createSessionListener, sessionListener);
-    }
-    catch( CollabrifyException e )
-    {
-      onError(e);
-    }
+    //try
+    //{
+     // Random rand = new Random();
+      //sessionName = "Test " + rand.nextInt(Integer.MAX_VALUE);
+        //sessionName = JOIN_THIS;
+     // myClient.createSession(sessionName, tags, password, 0,
+      //    createSessionListener, sessionListener);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Session Name to Create");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        sessionName = "NULL";
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+            @Override
+
+        public void onClick(DialogInterface dialog, int which) {
+            sessionName = input.getText().toString();
+            // setContentView(this);
+            try {
+                myClient.createSession(sessionName, tags, password, 0,
+                        createSessionListener, sessionListener);
+            } catch (ConnectException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (CollabrifyException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        });
+    builder.show();
+
+
+//    }
+ //   catch( CollabrifyException e )
+  //  {
+   //   onError(e);
+   // }
   }
 
   public void doJoinSession()
@@ -231,6 +265,37 @@ public class MainActivity extends Activity implements
     }
     try
     {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Session Name to Join");
+
+        final EditText input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        sessionName = "NULL";
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sessionName = input.getText().toString();
+                // setContentView(this);
+          	  /*try {
+
+          	  	  //sessionId = sessionList.get(which).id();
+                  myClient.joinSession(sessionId, password, joinSessionListener,
+                       sessionListener);
+
+  			} catch (ConnectException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			} catch (CollabrifyException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			}*/
+            }
+        });
+        builder.show();
+
       myClient.requestSessionList(tags, listSessionsListener);
     }
     catch( Exception e )
@@ -280,6 +345,28 @@ public class MainActivity extends Activity implements
 
   private void displaySessionList(final List<CollabrifySession> sessionList)
   {
+      // Create a list of session names
+      List<String> sessionNames = new ArrayList<String>();
+      for( CollabrifySession s : sessionList )
+      {
+          //  sessionNames.add(s.name());
+
+          if(s.name().equalsIgnoreCase(sessionName)) {
+              sessionId = s.id();
+              try {
+                  myClient.joinSession(sessionId, password, joinSessionListener,
+                          sessionListener);
+              } catch (ConnectException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+              } catch (CollabrifyException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+              }
+
+          }
+      }
+      /*
     // Create a list of session names
     List<String> sessionNames = new ArrayList<String>();
     for( CollabrifySession s : sessionList )
@@ -299,7 +386,7 @@ public class MainActivity extends Activity implements
             return;
         }
       sessionNames.add(s.name());
-    }
+    }*/
 /*
     // create a dialog to show the list of session names to the user
     final AlertDialog.Builder builder = new AlertDialog.Builder(
